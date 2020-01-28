@@ -6,13 +6,38 @@
 // https://docs.cypress.io/api/plugins/preprocessors-api.html#Examples
 
 /* eslint-disable import/no-extraneous-dependencies, global-require, arrow-body-style */
-// const webpack = require('@cypress/webpack-preprocessor')
+const webpack = require('@cypress/webpack-preprocessor')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
+const webpackOptions = {
+  plugins: [ new VueLoaderPlugin() ],
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.(css|scss|sass)$/,
+        use: [
+          'vue-style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass')
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+const options = { webpackOptions, watchOptions: {} }
 
 module.exports = (on, config) => {
-  // on('file:preprocessor', webpack({
-  //  webpackOptions: require('@vue/cli-service/webpack.config'),
-  //  watchOptions: {}
-  // }))
+  on('file:preprocessor', webpack(options))
 
   return Object.assign({}, config, {
     fixturesFolder: 'tests/e2e/fixtures',
