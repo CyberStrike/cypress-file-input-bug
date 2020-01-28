@@ -7,32 +7,7 @@
 
 /* eslint-disable import/no-extraneous-dependencies, global-require, arrow-body-style */
 const webpack = require('@cypress/webpack-preprocessor')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-
-const webpackOptions = {
-  plugins: [ new VueLoaderPlugin() ],
-  module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
-      {
-        test: /\.(css|scss|sass)$/,
-        use: [
-          'vue-style-loader', // creates style nodes from JS strings
-          'css-loader', // translates CSS into CommonJS
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: require('sass')
-            }
-          }
-        ]
-      }
-    ]
-  }
-}
+const webpackOptions = require('./webpack.config')
 
 const options = { webpackOptions, watchOptions: {} }
 
