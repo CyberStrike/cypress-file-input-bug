@@ -2,20 +2,21 @@
 import FileUpload from '../../../src/components/FileUpload.vue'
 const mountVue = require('cypress-vue-unit-test')
 
-describe('File Upload', () => {
-  beforeEach(mountVue({
-    template: `<file-upload @upload-license="debug"/>`,
-    data: () => ({}),
-    components: { FileUpload },
-    methods: {
-      debug (event) {
-        console.debug('Caught In Parent', event)
-      }
+const testComponent = {
+  template: `<file-upload @upload="debug"/>`,
+  data: () => ({}),
+  components: { FileUpload },
+  methods: {
+    debug (event) {
+      console.debug('Caught In Parent', event)
     }
-  }))
+  }
+}
+
+describe('File Upload', () => {
+  beforeEach(mountVue(testComponent))
 
   it('Triggers Upload Event', () => {
-    cy.visit('/')
-    cy.contains('h1', 'Welcome to Your Vue.js App')
+    cy.contains('Upload File')
   })
 })
