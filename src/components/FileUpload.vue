@@ -8,7 +8,7 @@
               <p>
                 Upload File 1
               </p>
-              <input id="file1" name="file1" type="file">
+              <input @change="upload" id="file1" name="file1" type="file">
             </label>
           </div>
         </div>
@@ -31,7 +31,20 @@
 
 <script>
 export default {
-  name: 'FileUpload'
+  name: 'FileUpload',
+  methods: {
+    upload (event) {
+      const fileName = event.target.files[0].name
+      this.$emit('upload', fileName)
+    }
+  },
+  created () {
+    const emit = this.$emit
+    this.$emit = (...args) => {
+      console.debug('emit!', ...args)
+      emit.call(this, ...args)
+    }
+  }
 }
 </script>
 
